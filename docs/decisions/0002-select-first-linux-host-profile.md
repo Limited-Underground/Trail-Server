@@ -1,7 +1,7 @@
 # Decision 0002: Select the first functional Linux host profile
 
 - **Date:** 2026-08-28
-- **Status:** Accepted selection; clean reproduction pending
+- **Status:** Accepted selection; first VM verifier passed, final reproduction pending
 
 ## Decision
 
@@ -72,6 +72,20 @@ run that records:
 - service restart, host reboot, and clean reinstall recovery outcomes; and
 - a sanitized installed-package manifest with no MAC address, private IP,
   credential, or other device-specific identifier.
+
+## First VM evidence
+
+On 2026-08-28, the first Hyper-V VM was provisioned and passed the post-reboot
+root verifier. The local kiosk displayed the explicit non-operational
+host-ready page, required services were active, the loopback health endpoint
+passed, and the sanitized package manifest was captured.
+
+That run used temporary Hyper-V NAT after the available USB Wi-Fi external
+switch did not provide guest DHCPv4. It therefore does not satisfy the
+router-reserved external-LAN or second-machine gate. Individual service
+restart-and-reverify evidence and the clean-reinstall recovery run also remain
+open. See
+[the dated evidence record](../evidence/2026-08-28-ts002-first-vm-reproduction.md).
 
 ## Sources
 

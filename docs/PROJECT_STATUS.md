@@ -15,15 +15,23 @@
 - TS-002 is in progress. Decision 0002 selects Debian 13.6.0 `amd64`, the
   minimal kiosk, DHCP-reservation addressing, bounded firewall, provisioning,
   verification, and recovery procedure.
-- The TS-002 host profile has passed repository static checks only. It has not
-  yet been reproduced in a clean Linux VM, reached from a second LAN machine,
-  reboot-tested, or reinstall-tested.
+- On 2026-08-28, the first Generation 2 Hyper-V VM was provisioned and passed
+  the post-reboot host verifier. The local Chromium kiosk displayed the
+  explicit non-operational host-ready page; Caddy, Docker, LightDM, nftables,
+  and SSH were enabled and active; the loopback health response passed; and
+  the bounded listener and firewall checks passed.
+- The first VM used Hyper-V Default Switch NAT after the available USB Wi-Fi
+  external-switch path did not provide guest DHCPv4. Windows host checks reached
+  SSH and HTTP and denied a bounded sample of non-permitted ports, but this is
+  not the selected router-reserved LAN path or second-machine acceptance.
 
 ## Not yet implemented or proven
 
-- clean Debian host installation and exact-profile reproduction;
-- local kiosk display, second-machine LAN access, and firewall acceptance;
-- service restart, host reboot, and clean reinstall recovery evidence;
+- final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
+- repeated blocked-port checks from the final reserved-LAN path;
+- an individual restart-and-reverify cycle for Caddy, LightDM, Docker,
+  nftables, and SSH;
+- clean reinstall, reprovision, reboot, and reverify recovery evidence;
 - ASP.NET Core service;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;

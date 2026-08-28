@@ -11,4 +11,11 @@
 | TS-007 | Planned | Add bounded large-file service | Digest-bound manifest and resumable/range-capable delivery proven without transporting file bytes over LoRa |
 | TS-008 | Planned | Integrate one dedicated server-radio device | Exact hardware/firmware binding, receive/transmit evidence, restart recovery, and safe abort behavior |
 
+## Dated progress
+
+- **2026-08-28 — TS-002:** First Hyper-V VM provisioning, the post-reboot
+  verifier, the local kiosk, host-side SSH/HTTP, and temporary-NAT firewall
+  probes passed. Reserved external-LAN acceptance, individual service-restart
+  recovery, and clean-reinstall recovery remain open.
+
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.
