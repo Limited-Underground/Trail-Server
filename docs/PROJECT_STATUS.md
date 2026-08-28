@@ -6,8 +6,13 @@
 
 - Server Option V0 is accepted as the provisional architecture direction.
 - An interactive web-interface prototype exists and uses demonstration data only.
-- The standalone local project directory exists at `D:\ESP32\Limited-Underground-Trail-Server-Prototype`.
-- The public GitHub repository and Limited Underground project page are the current publication tasks.
+- The standalone public repository is established at
+  [GitHub](https://github.com/nbjelanovic/Limited-Underground-Trail-Server).
+- The public [Limited Underground Trail Server project page](https://limitedunderground.com/projects/trail-server)
+  is deployed and links to the repository's canonical architecture, status, and
+  backlog records.
+- TS-001 foundation publication is complete. This is a project-foundation and
+  interface-prototype milestone, not a functional-server or readiness claim.
 
 ## Not yet implemented or proven
 

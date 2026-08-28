@@ -2,7 +2,7 @@
 
 | ID | Status | Task | Acceptance boundary |
 | --- | --- | --- | --- |
-| TS-001 | In progress | Establish standalone project foundation | Organized local repository, public GitHub repository, canonical architecture/status/decision records, validation, and Limited Underground public project page |
+| TS-001 | Done | Establish standalone project foundation | Organized local repository, public GitHub repository, canonical architecture/status/decision records, validation, and Limited Underground public project page |
 | TS-002 | Planned | Freeze first functional Linux host profile | Exact distribution, version, installation procedure, minimal GUI/kiosk, LAN addressing, firewall, and recovery procedure selected and reproduced |
 | TS-003 | Planned | Define dedicated server-radio contract | Versioned USB transport, identity, packet, queue, retry, disconnect, restart, privacy, and error semantics accepted without hardware claims |
 | TS-004 | Planned | Scaffold ASP.NET Core service | Build-tested service with health endpoint, configuration boundary, background radio abstraction, and no fake hardware success |
