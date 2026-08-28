@@ -111,5 +111,7 @@ From a second LAN machine, verify `http://<reserved-ip>/`, SSH access for the
 administrator, and denial of other probed TCP ports. Do not publish the actual
 address or scan output if it includes private identifiers.
 
-TS-002 remains in progress until those clean-VM results and the local kiosk
-display have been recorded and reviewed.
+The clean-VM reinstall, reprovision, reboot, verifier, and local kiosk evidence
+passed on 2026-08-28. TS-002 remains in progress until the router-reserved
+external-LAN and second-machine access and blocked-port results are recorded and
+reviewed.

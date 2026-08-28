@@ -69,7 +69,8 @@ HOST_PROFILE_RESULT=PASS
   a second machine on the final external LAN.
 - The blocked-port checks must be repeated from that final LAN path.
 - The individual service restart-and-reverify recovery level passed on this VM.
-- A clean reinstall, reprovision, reboot, and reverify cycle remains open.
+- A later clean reinstall, reprovision, reboot, and reverify cycle passed; see
+  [the separate clean-VM evidence record](2026-08-28-ts002-clean-vm-reproduction.md).
 
 This evidence advances TS-002 but does not complete it and does not establish a
 functional, supported, production-ready, or field-tested Trail Server.

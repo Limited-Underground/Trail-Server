@@ -23,6 +23,11 @@
 - The same VM then passed a sequential restart-and-active check for Caddy,
   LightDM, Docker, nftables, and SSH, followed by a full
   `HOST_PROFILE_RESULT=PASS` verifier run.
+- A second clean Generation 2 Hyper-V VM was then installed from the frozen
+  Debian image without a desktop task, provisioned from the public source,
+  rebooted, displayed the non-operational kiosk page, and returned
+  `HOST_PROFILE_RESULT=PASS`. This completes the clean
+  reinstall/reprovision/reboot software-host reproduction level.
 - The first VM used Hyper-V Default Switch NAT after the available USB Wi-Fi
   external-switch path did not provide guest DHCPv4. Windows host checks reached
   SSH and HTTP and denied a bounded sample of non-permitted ports, but this is
@@ -32,7 +37,6 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- clean reinstall, reprovision, reboot, and reverify recovery evidence;
 - ASP.NET Core service;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;

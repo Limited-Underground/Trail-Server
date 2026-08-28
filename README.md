@@ -24,9 +24,10 @@ router reservation, and a default-deny LAN firewall. Reproducible provisioning,
 verification, recovery, and Hyper-V setup guidance live under
 [`deploy/host`](deploy/host/README.md).
 
-This is an accepted selection, not completed host evidence. TS-002 remains in
-progress until the exact profile is reproduced in a clean VM and passes local
-kiosk, second-machine LAN, firewall, reboot, and reinstall recovery checks.
+The clean-VM installation, provisioning, reboot, local kiosk, and complete host
+verifier now pass. TS-002 remains in progress only until the router-reserved
+external-LAN path passes second-machine HTTP/SSH and bounded blocked-port
+acceptance.
 
 ## Repository state
 

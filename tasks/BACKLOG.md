@@ -17,6 +17,11 @@
   verification, local kiosk, host-side SSH/HTTP, temporary-NAT firewall probes,
   and the individual Caddy, LightDM, Docker, nftables, and SSH
   restart-and-reverify recovery level passed. Reserved external-LAN acceptance
-  and clean-reinstall recovery remain open.
+  remained open.
+- **2026-08-28 — TS-002:** A second clean Hyper-V VM was installed from the
+  frozen Debian image without a desktop task, provisioned from the public
+  source, rebooted, displayed the bounded host-ready kiosk, and returned
+  `HOST_PROFILE_RESULT=PASS`. Clean software-host reproduction is now proven;
+  router-reserved external-LAN and second-machine acceptance remain open.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.

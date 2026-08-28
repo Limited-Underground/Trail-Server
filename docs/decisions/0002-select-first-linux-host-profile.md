@@ -1,7 +1,7 @@
 # Decision 0002: Select the first functional Linux host profile
 
 - **Date:** 2026-08-28
-- **Status:** Accepted selection; first VM verifier passed, final reproduction pending
+- **Status:** Accepted selection; clean software-host reproduction passed, final reserved-LAN acceptance pending
 
 ## Decision
 
@@ -61,17 +61,18 @@ service and persistence tasks.
 
 ## Reproduction gate
 
-This selection does not finish TS-002. Acceptance still requires a clean VM
-run that records:
+This selection does not finish TS-002. The clean VM run now records:
 
 - installer-image verification and exact installation selections;
 - provisioner and verifier results;
 - local kiosk display after reboot;
-- HTTP and SSH access from a second LAN machine by the reserved IPv4 address;
-- denial of non-permitted inbound ports;
 - service restart, host reboot, and clean reinstall recovery outcomes; and
 - a sanitized installed-package manifest with no MAC address, private IP,
   credential, or other device-specific identifier.
+
+Final TS-002 acceptance still requires HTTP and SSH access from a second LAN
+machine by the router-reserved IPv4 address and denial of non-permitted inbound
+ports from that final LAN path.
 
 ## First VM evidence
 
@@ -84,8 +85,19 @@ That run used temporary Hyper-V NAT after the available USB Wi-Fi external
 switch did not provide guest DHCPv4. It therefore does not satisfy the
 router-reserved external-LAN or second-machine gate. The individual Caddy,
 LightDM, Docker, nftables, and SSH restart-and-reverify recovery level
-subsequently passed. The clean-reinstall recovery run remains open. See
-[the dated evidence record](../evidence/2026-08-28-ts002-first-vm-reproduction.md).
+subsequently passed. See
+[the first-VM evidence record](../evidence/2026-08-28-ts002-first-vm-reproduction.md).
+
+## Clean reproduction evidence
+
+Later on 2026-08-28, a second clean Generation 2 Hyper-V VM was installed from
+the frozen Debian image without a desktop task, provisioned from the public
+source, rebooted, and verified. The locked kiosk displayed the bounded
+host-ready page and the complete verifier returned
+`HOST_PROFILE_RESULT=PASS`. This proves the software-host clean reinstall,
+reprovision, and reboot recovery level. It does not prove the final
+router-reserved LAN or second-machine boundary. See
+[the clean-VM evidence record](../evidence/2026-08-28-ts002-clean-vm-reproduction.md).
 
 ## Sources
 
