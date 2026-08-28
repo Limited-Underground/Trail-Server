@@ -1,0 +1,5 @@
+xset s off
+xset -dpms
+xset s noblank
+unclutter-xfixes --timeout 2 --hide-on-touch &
+/usr/local/libexec/trail-server-kiosk &

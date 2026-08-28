@@ -17,4 +17,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: bash -n deploy/host/install-host.sh deploy/host/verify-host.sh deploy/host/files/trail-server-kiosk
       - run: npm test

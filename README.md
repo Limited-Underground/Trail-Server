@@ -1,6 +1,6 @@
 # Limited Underground Trail Server
 
-Limited Underground Trail Server is the planned Linux-based server and operator interface for a Trail LoRa network. The project is in architecture and interface-prototype stage; no functional server, supported server-radio hardware, production deployment, or field acceptance exists yet.
+Limited Underground Trail Server is the planned Linux-based server and operator interface for a Trail LoRa network. The project is in architecture, interface-prototype, and first-host-profile stage; no functional Trail service, supported server-radio hardware, production deployment, or field acceptance exists yet.
 
 ## Current provisional direction
 
@@ -16,13 +16,26 @@ Server Option V0 uses:
 
 The dedicated server-radio device is the server's Trail-network interface. Large files that do not belong on the LoRa network may be delivered separately through the server's IP file service.
 
+## TS-002 host profile
+
+The first Linux host profile now selects the verified Debian 13.6.0 `amd64`
+netinst image, a LightDM/Openbox/Chromium local kiosk, IPv4 DHCP with a private
+router reservation, and a default-deny LAN firewall. Reproducible provisioning,
+verification, recovery, and Hyper-V setup guidance live under
+[`deploy/host`](deploy/host/README.md).
+
+This is an accepted selection, not completed host evidence. TS-002 remains in
+progress until the exact profile is reproduced in a clean VM and passes local
+kiosk, second-machine LAN, firewall, reboot, and reinstall recovery checks.
+
 ## Repository state
 
-The current source is an interactive interface prototype backed by demonstration data. It does not connect to a radio, database, filesystem authority, or live Trail deployment.
+The current web source is an interactive interface prototype backed by demonstration data. It does not connect to a radio, database, filesystem authority, or live Trail deployment. The host-profile placeholder is also explicitly non-operational.
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Current status](docs/PROJECT_STATUS.md)
 - [Decision 0001: Server Option V0](docs/decisions/0001-accept-server-option-v0.md)
+- [Decision 0002: First Linux host profile](docs/decisions/0002-select-first-linux-host-profile.md)
 - [Backlog](tasks/BACKLOG.md)
 
 ## Local prototype

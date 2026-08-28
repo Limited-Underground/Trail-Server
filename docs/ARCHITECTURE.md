@@ -25,14 +25,27 @@ The server host does not implement the LoRa physical interface itself. Its dedic
 
 ## Linux appliance
 
-The planned base is a minimal Linux installation. A lightweight graphical session launches the same browser-based administration interface that authorized machines can reach over the local network by server IP. The first functional server may use plain HTTP on the trusted LAN. Publicly trusted HTTPS is not an initial acceptance gate.
+The first functional host profile uses Debian 13.6.0 `amd64`, installed from
+the exact netinst image recorded in Decision 0002 and then updated from Debian
+stable/security repositories. The installation selects no desktop environment.
 
-PostgreSQL and internal service ports remain local to the server. Only the administration and explicitly permitted file-delivery surfaces are exposed to the LAN.
+LightDM autologs into a locked `trailkiosk` account running Openbox and
+Chromium at the loopback Caddy entry point. The same browser-based
+administration interface is available to authorized machines over the local
+network by the server's reserved IPv4 address. The first functional server may
+use plain HTTP on the trusted LAN. Publicly trusted HTTPS is not an initial
+acceptance gate.
+
+The host uses DHCP with a router-side reservation. Its default-deny firewall
+permits SSH and HTTP from only the configured trusted IPv4 LAN. PostgreSQL and
+internal service ports remain local to the server. Containers must not publish
+internal ports to all host interfaces.
 
 ## Reused components
 
 | Concern | Current option | Reuse boundary |
 | --- | --- | --- |
+| Host operating system | Debian 13.6.0 `amd64` installation seed | Minimal maintained base, systemd supervision, security updates, recovery seed, and local kiosk packages |
 | Server application | ASP.NET Core | Web APIs, background services, health checks, configuration, authentication, and administration UI foundation |
 | Persistent data | PostgreSQL | Relational records, queues, audit history, and migrations |
 | Geographic data | PostGIS | Locations, tracks, proximity, spatial indexing, and later geofencing |
@@ -58,7 +71,6 @@ The server may announce a compact file manifest through an applicable Trail mess
 
 ## Deferred choices
 
-- exact Linux distribution and pinned version;
 - exact server-radio hardware after supported-device evidence exists;
 - USB framing and recovery contract;
 - containerized versus native radio bridge after Linux USB reliability testing;

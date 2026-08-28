@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -u
+
+readonly KIOSK_URL="http://127.0.0.1/"
+
+until curl --fail --silent --max-time 2 "${KIOSK_URL}" >/dev/null 2>&1; do
+  sleep 2
+done
+
+while true; do
+  chromium \
+    --app="${KIOSK_URL}" \
+    --disable-features=Translate \
+    --disable-session-crashed-bubble \
+    --kiosk \
+    --no-first-run \
+    --noerrdialogs \
+    --password-store=basic
+  sleep 2
+done

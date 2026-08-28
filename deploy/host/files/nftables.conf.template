@@ -1,0 +1,17 @@
+#!/usr/sbin/nft -f
+
+destroy table inet trail_server
+
+table inet trail_server {
+  chain input {
+    type filter hook input priority filter; policy drop;
+
+    iifname "lo" accept
+    ct state invalid drop
+    ct state established,related accept
+    udp sport 67 udp dport 68 accept
+    ip protocol icmp accept
+    ip6 nexthdr ipv6-icmp accept
+    ip saddr __TRAIL_LAN_CIDR__ tcp dport { 22, 80 } ct state new accept
+  }
+}
