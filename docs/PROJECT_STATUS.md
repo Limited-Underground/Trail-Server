@@ -20,6 +20,9 @@
   explicit non-operational host-ready page; Caddy, Docker, LightDM, nftables,
   and SSH were enabled and active; the loopback health response passed; and
   the bounded listener and firewall checks passed.
+- The same VM then passed a sequential restart-and-active check for Caddy,
+  LightDM, Docker, nftables, and SSH, followed by a full
+  `HOST_PROFILE_RESULT=PASS` verifier run.
 - The first VM used Hyper-V Default Switch NAT after the available USB Wi-Fi
   external-switch path did not provide guest DHCPv4. Windows host checks reached
   SSH and HTTP and denied a bounded sample of non-permitted ports, but this is
@@ -29,8 +32,6 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- an individual restart-and-reverify cycle for Caddy, LightDM, Docker,
-  nftables, and SSH;
 - clean reinstall, reprovision, reboot, and reverify recovery evidence;
 - ASP.NET Core service;
 - PostgreSQL/PostGIS schema;

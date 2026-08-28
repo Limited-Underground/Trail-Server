@@ -82,9 +82,9 @@ passed, and the sanitized package manifest was captured.
 
 That run used temporary Hyper-V NAT after the available USB Wi-Fi external
 switch did not provide guest DHCPv4. It therefore does not satisfy the
-router-reserved external-LAN or second-machine gate. Individual service
-restart-and-reverify evidence and the clean-reinstall recovery run also remain
-open. See
+router-reserved external-LAN or second-machine gate. The individual Caddy,
+LightDM, Docker, nftables, and SSH restart-and-reverify recovery level
+subsequently passed. The clean-reinstall recovery run remains open. See
 [the dated evidence record](../evidence/2026-08-28-ts002-first-vm-reproduction.md).
 
 ## Sources

@@ -13,9 +13,10 @@
 
 ## Dated progress
 
-- **2026-08-28 — TS-002:** First Hyper-V VM provisioning, the post-reboot
-  verifier, the local kiosk, host-side SSH/HTTP, and temporary-NAT firewall
-  probes passed. Reserved external-LAN acceptance, individual service-restart
-  recovery, and clean-reinstall recovery remain open.
+- **2026-08-28 — TS-002:** First Hyper-V VM provisioning, post-reboot
+  verification, local kiosk, host-side SSH/HTTP, temporary-NAT firewall probes,
+  and the individual Caddy, LightDM, Docker, nftables, and SSH
+  restart-and-reverify recovery level passed. Reserved external-LAN acceptance
+  and clean-reinstall recovery remain open.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.

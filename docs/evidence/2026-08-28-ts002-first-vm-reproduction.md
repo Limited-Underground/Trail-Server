@@ -29,6 +29,9 @@ other deployment-private identifier is recorded here.
   non-loopback listener checks.
 - Windows host checks reached SSH and HTTP through the temporary Hyper-V NAT
   path. A bounded sample of non-permitted TCP ports was denied.
+- Caddy, LightDM, Docker, nftables, and SSH were restarted sequentially. Each
+  service returned active immediately after restart, and the complete host
+  verifier then returned `HOST_PROFILE_RESULT=PASS`.
 
 Verifier result:
 
@@ -65,7 +68,7 @@ HOST_PROFILE_RESULT=PASS
 - The result does not prove router-reserved addressing or HTTP/SSH access from
   a second machine on the final external LAN.
 - The blocked-port checks must be repeated from that final LAN path.
-- The individual service restart-and-reverify sequence remains open.
+- The individual service restart-and-reverify recovery level passed on this VM.
 - A clean reinstall, reprovision, reboot, and reverify cycle remains open.
 
 This evidence advances TS-002 but does not complete it and does not establish a
