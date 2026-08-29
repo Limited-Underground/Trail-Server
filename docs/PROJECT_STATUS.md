@@ -1,6 +1,6 @@
 # Trail Server Project Status
 
-**As of:** 2026-08-28
+**As of:** 2026-08-29
 
 ## Current state
 
@@ -38,6 +38,12 @@
   service only to host loopback. Firewall restart recovery, full host
   re-verification, VM reboot recovery, Windows SSH/HTTP access, and denial of
   direct container-port access passed.
+- TS-003 is complete at the contract and host-simulator level. Decision 0003
+  accepts LUSR/1 for the local server-radio byte stream. Its deterministic
+  framing, version refusal, required-message handling, credits, duplicate
+  suppression, durable receive-before-ack, disconnect/restart reconciliation,
+  device-reboot uncertainty, and log redaction passed twelve compact .NET 8
+  simulator cases. The on-air payload remains opaque and no hardware was used.
 
 ## Not yet implemented or proven
 
@@ -46,7 +52,7 @@
 - the remaining TS-004 background radio bridge and completed service scaffold;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;
-- USB bridge contract or hardware connection;
+- USB hardware connection or firmware implementation of LUSR/1;
 - live receive or transmit queues;
 - large-file delivery;
 - map ingestion or rendering from live data;

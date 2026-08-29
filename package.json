@@ -12,7 +12,8 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "test:host-profile": "node deploy/host/test-static.mjs",
     "test:server-service": "node deploy/app/test-static.mjs",
-    "test": "npm run lint && npm run test:host-profile && npm run test:server-service && npm run build"
+    "test:radio-contract": "dotnet run --project server/TrailServer.RadioContract.SimulatorTests/TrailServer.RadioContract.SimulatorTests.csproj --configuration Release",
+    "test": "npm run lint && npm run test:host-profile && npm run test:server-service && npm run test:radio-contract && npm run build"
   },
   "dependencies": {
     "next": "16.2.6",

@@ -23,6 +23,11 @@ Linux Trail Server
 
 The server host does not implement the LoRa physical interface itself. Its dedicated Trail-compatible radio device participates in the radio network and exposes a bounded local USB contract.
 
+That local boundary is now frozen as
+[LUSR/1](contracts/server-radio-usb-v1.md). LUSR/1 treats the on-air payload as
+opaque and defines only host/device framing, identity, credits, idempotency,
+receive acknowledgement, restart reconciliation, and privacy-safe errors.
+
 ## Linux appliance
 
 The first functional host profile uses Debian 13.6.0 `amd64`, installed from
@@ -78,7 +83,7 @@ The server may announce a compact file manifest through an applicable Trail mess
 ## Deferred choices
 
 - exact server-radio hardware after supported-device evidence exists;
-- USB framing and recovery contract;
+- exact USB class, device discovery, and stable Linux device path;
 - containerized versus native radio bridge after Linux USB reliability testing;
 - local-disk versus S3-compatible file storage after actual scale is known;
 - trusted LAN HTTPS;

@@ -4,7 +4,7 @@
 | --- | --- | --- | --- |
 | TS-001 | Done | Establish standalone project foundation | Organized local repository, public GitHub repository, canonical architecture/status/decision records, validation, and Limited Underground public project page |
 | TS-002 | In progress | Freeze first functional Linux host profile | Exact distribution, version, installation procedure, minimal GUI/kiosk, LAN addressing, firewall, and recovery procedure selected and reproduced |
-| TS-003 | Planned | Define dedicated server-radio contract | Versioned USB transport, identity, packet, queue, retry, disconnect, restart, privacy, and error semantics accepted without hardware claims |
+| TS-003 | Done | Define dedicated server-radio contract | Versioned USB transport, identity, packet, queue, retry, disconnect, restart, privacy, and error semantics accepted without hardware claims |
 | TS-004 | In progress | Scaffold ASP.NET Core service | Build-tested service with health endpoint, configuration boundary, background radio abstraction, and no fake hardware success |
 | TS-005 | Planned | Add PostgreSQL/PostGIS persistence | Migrated schema for queues, radio observations, Trail records, geographic data, and audit history with restore evidence |
 | TS-006 | Planned | Add LAN administration shell | Local kiosk and second LAN computer reach the same dashboard by IP; internal database ports remain unexposed |
@@ -30,5 +30,10 @@
   restart, host re-verification, reboot, Windows HTTP/SSH reachability, and
   blocked direct-container-port checks. TS-004 remains in progress; no radio
   transport, background bridge, database, queue, or hardware success exists.
+- **2026-08-29 — TS-003:** LUSR/1 freezes the dedicated server-radio local
+  byte-stream, identity, framing, credit, idempotency, receive-before-ack,
+  reconnect, reboot-uncertainty, error, and privacy boundaries while keeping
+  the on-air payload opaque. Twelve compact .NET 8 simulator cases passed. This is
+  contract and host-simulator evidence only; no hardware or firmware was used.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.

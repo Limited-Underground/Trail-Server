@@ -40,10 +40,18 @@ Caddy access, and blocked direct-container-port checks. See
 [deploy/app](deploy/app/README.md). This does not implement the server-radio
 contract or a functional Trail Server.
 
+TS-003 accepts the simulator-tested
+[LUSR/1 server-radio USB contract](docs/contracts/server-radio-usb-v1.md).
+The contract defines framing, logical identity, bounded credits, idempotent
+transmit IDs, receive-before-ack durability, reconnect/reboot handling, and
+privacy-safe errors while leaving the on-air radio payload opaque. This is not
+hardware or firmware compatibility evidence.
+
 - [Architecture](docs/ARCHITECTURE.md)
 - [Current status](docs/PROJECT_STATUS.md)
 - [Decision 0001: Server Option V0](docs/decisions/0001-accept-server-option-v0.md)
 - [Decision 0002: First Linux host profile](docs/decisions/0002-select-first-linux-host-profile.md)
+- [Decision 0003: Server-radio USB contract v1](docs/decisions/0003-accept-server-radio-usb-v1.md)
 - [Backlog](tasks/BACKLOG.md)
 
 ## Local prototype
