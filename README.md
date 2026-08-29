@@ -1,6 +1,6 @@
 # Limited Underground Trail Server
 
-Limited Underground Trail Server is the planned Linux-based server and operator interface for a Trail LoRa network. The project is in architecture, interface-prototype, and first-host-profile stage; no functional Trail service, supported server-radio hardware, production deployment, or field acceptance exists yet.
+Limited Underground Trail Server is the planned Linux-based server and operator interface for a Trail LoRa network. The project is in architecture, interface-prototype, first-host-profile, and initial service-scaffold stage; no functional radio service, supported server-radio hardware, production deployment, or field acceptance exists yet.
 
 ## Current provisional direction
 
@@ -32,6 +32,13 @@ acceptance.
 ## Repository state
 
 The current web source is an interactive interface prototype backed by demonstration data. It does not connect to a radio, database, filesystem authority, or live Trail deployment. The host-profile placeholder is also explicitly non-operational.
+
+TS-004 Phase A adds a .NET 8 API with a real health/configuration boundary. Its
+only radio state is explicitly unavailable, and it reports operational false.
+The first VM passed deployment, firewall-restart recovery, reboot recovery,
+Caddy access, and blocked direct-container-port checks. See
+[deploy/app](deploy/app/README.md). This does not implement the server-radio
+contract or a functional Trail Server.
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Current status](docs/PROJECT_STATUS.md)

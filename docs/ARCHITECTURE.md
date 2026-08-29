@@ -41,6 +41,12 @@ permits SSH and HTTP from only the configured trusted IPv4 LAN. PostgreSQL and
 internal service ports remain local to the server. Containers must not publish
 internal ports to all host interfaces.
 
+TS-004 Phase A runs the ASP.NET Core service in a private Docker network and
+publishes it only on host loopback. Caddy is the sole accepted LAN entry point.
+The application deployment couples Docker restart ordering to nftables restart
+so Docker reconstructs its private network rules after the firewall is rebuilt.
+The current API rejects an operational claim and exposes no radio transport.
+
 ## Reused components
 
 | Concern | Current option | Reuse boundary |

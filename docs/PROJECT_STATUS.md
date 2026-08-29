@@ -32,12 +32,18 @@
   external-switch path did not provide guest DHCPv4. Windows host checks reached
   SSH and HTTP and denied a bounded sample of non-permitted ports, but this is
   not the selected router-reserved LAN path or second-machine acceptance.
+- TS-004 Phase A is accepted on the first VM. The .NET 8 service builds, exposes
+  a configuration-bound /api/health endpoint through Caddy, and explicitly
+  reports operational false with radio unavailable. Docker publishes the
+  service only to host loopback. Firewall restart recovery, full host
+  re-verification, VM reboot recovery, Windows SSH/HTTP access, and denial of
+  direct container-port access passed.
 
 ## Not yet implemented or proven
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- ASP.NET Core service;
+- the remaining TS-004 background radio bridge and completed service scaffold;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;
 - USB bridge contract or hardware connection;

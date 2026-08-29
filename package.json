@@ -11,7 +11,8 @@
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "test:host-profile": "node deploy/host/test-static.mjs",
-    "test": "npm run lint && npm run test:host-profile && npm run build"
+    "test:server-service": "node deploy/app/test-static.mjs",
+    "test": "npm run lint && npm run test:host-profile && npm run test:server-service && npm run build"
   },
   "dependencies": {
     "next": "16.2.6",

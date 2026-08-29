@@ -4,7 +4,14 @@
 }
 
 :80 {
-	root * /var/www/trail-server
 	header Cache-Control "no-store"
-	file_server
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:5080
+	}
+
+	handle {
+		root * /var/www/trail-server
+		file_server
+	}
 }
