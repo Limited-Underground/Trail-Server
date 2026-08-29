@@ -35,5 +35,10 @@
   reconnect, reboot-uncertainty, error, and privacy boundaries while keeping
   the on-air payload opaque. Twelve compact .NET 8 simulator cases passed. This is
   contract and host-simulator evidence only; no hardware or firmware was used.
+- **2026-08-29 — TS-004 Phase B:** A disabled-by-default, transport-neutral
+  LUSR/1 BackgroundService passed eleven host-simulator cases for negotiation,
+  session refusal, corruption recovery, EOF, and receive-without-ACK behavior.
+  No serial/USB implementation, device mount, transmit queue, persistence,
+  hardware, RF, or operational claim exists. TS-004 remains in progress.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.

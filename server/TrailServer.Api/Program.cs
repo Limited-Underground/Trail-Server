@@ -1,5 +1,6 @@
 using TrailServer.Api.Configuration;
 using TrailServer.Api.Radio;
+using TrailServer.RadioBridge;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,16 @@ builder.Services
     .Bind(builder.Configuration.GetSection(TrailServerOptions.SectionName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
-builder.Services.AddSingleton<IServerRadioStatus, UnavailableServerRadioStatus>();
+builder.Services
+    .AddOptions<RadioBridgeOptions>()
+    .Bind(builder.Configuration.GetSection(RadioBridgeOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+builder.Services.AddSingleton<RadioBridgeState>();
+builder.Services.AddSingleton<IRadioBridgeState>(services => services.GetRequiredService<RadioBridgeState>());
+builder.Services.AddSingleton<IRadioByteTransport, DisabledRadioByteTransport>();
+builder.Services.AddSingleton<IServerRadioStatus, BridgeServerRadioStatus>();
+builder.Services.AddHostedService<ServerRadioBridge>();
 
 var app = builder.Build();
 

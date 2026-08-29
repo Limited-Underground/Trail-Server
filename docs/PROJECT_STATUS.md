@@ -38,6 +38,12 @@
   service only to host loopback. Firewall restart recovery, full host
   re-verification, VM reboot recovery, Windows SSH/HTTP access, and denial of
   direct container-port access passed.
+- TS-004 Phase B is host-simulator tested. A transport-neutral LUSR/1
+  BackgroundService is registered but disabled by default. Eleven cases passed
+  disabled-mode authority, fragmented HELLO negotiation, corruption recovery,
+  major/session/mandatory-message refusal, clean EOF, and receive-without-ACK
+  behavior. No serial/USB transport or hardware was used; TS-004 remains in
+  progress.
 - TS-003 is complete at the contract and host-simulator level. Decision 0003
   accepts LUSR/1 for the local server-radio byte stream. Its deterministic
   framing, version refusal, required-message handling, credits, duplicate
@@ -49,7 +55,7 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- the remaining TS-004 background radio bridge and completed service scaffold;
+- a real TS-004 serial/USB transport and completed service scaffold;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;
 - USB hardware connection or firmware implementation of LUSR/1;

@@ -2,7 +2,9 @@
 
 This directory deploys the bounded TS-004 Phase A ASP.NET Core service to a
 provisioned TS-002 host. It does not provide a radio transport, packet
-contract, database, live queue, or operational Trail Server.
+database, live queue, or operational Trail Server. Phase B includes a
+transport-neutral LUSR/1 background worker, but deployed configuration keeps it
+disabled and no serial/USB implementation or device mount exists.
 
 ## Install or update
 

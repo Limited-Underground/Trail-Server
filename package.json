@@ -13,7 +13,8 @@
     "test:host-profile": "node deploy/host/test-static.mjs",
     "test:server-service": "node deploy/app/test-static.mjs",
     "test:radio-contract": "dotnet run --project server/TrailServer.RadioContract.SimulatorTests/TrailServer.RadioContract.SimulatorTests.csproj --configuration Release",
-    "test": "npm run lint && npm run test:host-profile && npm run test:server-service && npm run test:radio-contract && npm run build"
+    "test:radio-bridge": "dotnet run --project server/TrailServer.RadioBridge.SimulatorTests/TrailServer.RadioBridge.SimulatorTests.csproj --configuration Release",
+    "test": "npm run lint && npm run test:host-profile && npm run test:server-service && npm run test:radio-contract && npm run test:radio-bridge && npm run build"
   },
   "dependencies": {
     "next": "16.2.6",

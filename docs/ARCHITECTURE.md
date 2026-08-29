@@ -50,7 +50,11 @@ TS-004 Phase A runs the ASP.NET Core service in a private Docker network and
 publishes it only on host loopback. Caddy is the sole accepted LAN entry point.
 The application deployment couples Docker restart ordering to nftables restart
 so Docker reconstructs its private network rules after the firewall is rebuilt.
-The current API rejects an operational claim and exposes no radio transport.
+The API rejects an operational claim. TS-004 Phase B adds a transport-neutral
+LUSR/1 background worker that is disabled in deployed configuration. It can
+negotiate and monitor a simulated ordered byte stream, but it has no serial or
+USB discovery implementation, sends no transmit requests, and refuses to
+acknowledge received packets before TS-005 supplies durable storage.
 
 ## Reused components
 

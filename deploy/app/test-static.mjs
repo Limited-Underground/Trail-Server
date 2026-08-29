@@ -11,6 +11,9 @@ const requiredFiles = [
   "server/TrailServer.Api/Configuration/TrailServerOptions.cs",
   "server/TrailServer.Api/Radio/IServerRadioStatus.cs",
   "server/TrailServer.Api/Radio/UnavailableServerRadioStatus.cs",
+  "server/TrailServer.Api/Radio/BridgeServerRadioStatus.cs",
+  "server/TrailServer.RadioBridge/ServerRadioBridge.cs",
+  "server/TrailServer.RadioBridge/IRadioByteTransport.cs",
   "server/TrailServer.Api/Dockerfile",
   "deploy/app/compose.yaml",
   "deploy/app/docker-nftables.conf",
@@ -25,6 +28,10 @@ for (const file of requiredFiles) {
 const project = read("server/TrailServer.Api/TrailServer.Api.csproj");
 const program = read("server/TrailServer.Api/Program.cs");
 const radio = read("server/TrailServer.Api/Radio/UnavailableServerRadioStatus.cs");
+const bridge = read("server/TrailServer.RadioBridge/ServerRadioBridge.cs");
+const bridgeOptions = read("server/TrailServer.RadioBridge/RadioBridgeOptions.cs");
+const appsettings = read("server/TrailServer.Api/appsettings.json");
+const dockerfile = read("server/TrailServer.Api/Dockerfile");
 const compose = read("deploy/app/compose.yaml");
 const dockerNftables = read("deploy/app/docker-nftables.conf");
 const caddy = read("deploy/host/files/Caddyfile");
@@ -33,11 +40,18 @@ const verifier = read("deploy/app/verify-app.sh");
 assert.ok(project.includes("<TargetFramework>net8.0</TargetFramework>"), "service must target net8.0");
 assert.ok(program.includes('app.MapGet("/api/health"'), "service health endpoint is missing");
 assert.ok(program.includes("operational = false"), "service must reject an operational claim");
+assert.ok(program.includes("AddHostedService<ServerRadioBridge>"), "radio bridge worker is not registered");
 assert.ok(radio.includes('Availability: "unavailable"'), "radio must default unavailable");
 assert.ok(radio.includes('Reason: "not-configured"'), "radio must explain unavailable state");
-assert.ok(!program.match(/serial|packet|transmit|receive/i), "TS-004 scaffold must not invent the TS-003 radio contract");
+assert.ok(appsettings.includes('"Enabled": false'), "deployed radio bridge must default disabled");
+assert.ok(bridge.includes("BackgroundService"), "radio bridge must use supervised background lifecycle");
+assert.ok(bridge.includes("RadioMessageType.RxPacket"), "bridge must explicitly handle receive-without-persistence");
+assert.ok(!bridge.match(/TxSubmit|TxAccepted|RxAck/), "Phase B bridge must not transmit or acknowledge RX");
+assert.ok(bridgeOptions.includes("ReconnectDelaySeconds"), "bridge reconnect delay must be bounded configuration");
+assert.ok(dockerfile.includes("TrailServer.RadioBridge.csproj"), "Docker build omits bridge dependency");
 assert.ok(compose.includes('"127.0.0.1:5080:8080"'), "container port must bind only to host loopback");
 assert.ok(!compose.includes("network_mode: host"), "service must retain its network namespace");
+assert.ok(!compose.match(/\/dev\/|devices:|privileged:/), "Phase B must not add hardware authority");
 assert.ok(compose.includes("no-new-privileges:true"), "container must reject privilege escalation");
 assert.ok(compose.includes("cap_drop:\n      - ALL"), "container must drop Linux capabilities");
 assert.ok(dockerNftables.includes("After=nftables.service"), "Docker must start after nftables");

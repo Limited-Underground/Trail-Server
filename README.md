@@ -40,6 +40,12 @@ Caddy access, and blocked direct-container-port checks. See
 [deploy/app](deploy/app/README.md). This does not implement the server-radio
 contract or a functional Trail Server.
 
+TS-004 Phase B adds a disabled-by-default, transport-neutral LUSR/1 background
+worker. Hardware-free tests prove bounded HELLO negotiation, current-session
+monitoring, disconnect failure handling, and that received packets are never
+acknowledged without durable storage. No serial/USB discovery, device mount,
+transmit queue, live hardware, or operational claim is present.
+
 TS-003 accepts the simulator-tested
 [LUSR/1 server-radio USB contract](docs/contracts/server-radio-usb-v1.md).
 The contract defines framing, logical identity, bounded credits, idempotent
