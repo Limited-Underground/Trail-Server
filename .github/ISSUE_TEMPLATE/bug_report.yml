@@ -1,0 +1,59 @@
+name: Prototype defect
+description: Report a reproducible problem in the public prototype or tooling.
+title: "[Defect]: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not include credentials, radio keys, device identifiers, private
+        network details, or sensitive field data. Security issues belong in a
+        private vulnerability report.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Web interface prototype
+        - ASP.NET Core service
+        - Server-radio contract or bridge
+        - Linux host provisioning
+        - Application deployment
+        - Documentation or evidence
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide the smallest safe, repeatable sequence.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or version
+      placeholder: e8321e9 or main
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: I removed secrets, private identifiers, and sensitive operational data.
+          required: true

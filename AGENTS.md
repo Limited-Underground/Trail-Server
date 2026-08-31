@@ -2,7 +2,7 @@
 
 ## Project boundary
 
-This repository is the independent public boundary for Limited Underground Trail Server work. Do not copy private planning, device identifiers, credentials, radio keys, raw private captures, or unrelated OpenTrail implementation files into this repository.
+This repository is the maintained Apache-2.0 public prototype and reference boundary for Limited Underground Trail Server work. Future production and commercial implementation belongs in a separate private repository; only sanitized public interfaces, documentation, tooling, and evidence belong here. Do not copy private planning, licensing enforcement, device identifiers, credentials, radio keys, raw private captures, or unrelated OpenTrail implementation files into this repository.
 
 The OpenTrail firmware and Android repositories remain separate authorities for their own protocols and release evidence. Reuse their public contracts through explicit versioned dependencies or documented interfaces rather than duplicated source.
 

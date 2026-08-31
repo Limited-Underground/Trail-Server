@@ -1,13 +1,17 @@
 # Trail Server Project Status
 
-**As of:** 2026-08-29
+**As of:** 2026-08-31
 
 ## Current state
 
 - Server Option V0 is accepted as the provisional architecture direction.
 - An interactive web-interface prototype exists and uses demonstration data only.
 - The standalone public repository is established at
-  [GitHub](https://github.com/nbjelanovic/Limited-Underground-Trail-Server).
+  [GitHub](https://github.com/Limited-Underground/Trail-Server) under the
+  Limited Underground organization.
+- Decision 0004 defines this repository as the polished, non-operational public
+  prototype and reference boundary. Future production and commercial source
+  will be developed in a separate private repository.
 - The public [Limited Underground Trail Server project page](https://limitedunderground.com/projects/trail-server)
   links to the repository's canonical architecture, status, and backlog records.
 - TS-001 foundation publication is complete. This is a project-foundation and

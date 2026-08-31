@@ -1,74 +1,108 @@
 # Limited Underground Trail Server
 
-Limited Underground Trail Server is the planned Linux-based server and operator interface for a Trail LoRa network. The project is in architecture, interface-prototype, first-host-profile, and initial service-scaffold stage; no functional radio service, supported server-radio hardware, production deployment, or field acceptance exists yet.
+[![Validation](https://github.com/Limited-Underground/Trail-Server/actions/workflows/validate.yml/badge.svg)](https://github.com/Limited-Underground/Trail-Server/actions/workflows/validate.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+![Status: public prototype](https://img.shields.io/badge/status-public%20prototype-9a6700)
 
-## Current provisional direction
+Public architecture, interface prototypes, host provisioning, contracts, and
+reproducibility evidence for the planned Limited Underground Trail Server.
 
-Server Option V0 uses:
+> [!IMPORTANT]
+> This repository is a **non-operational public engineering prototype**. It does
+> not contain a production Trail Server, supported server-radio firmware, field
+> validation, or safety assurance.
 
-- a dedicated Trail-compatible LoRa device connected to the Linux server through USB;
-- a modular ASP.NET Core server application;
-- PostgreSQL with PostGIS for persistent and geographic data;
-- Caddy for LAN web access and large-file delivery;
-- MapLibre and PMTiles for maps;
-- a minimal Linux graphical session for the server's local browser, with the same administration interface available to other machines on the LAN by IP;
-- plain HTTP on the trusted LAN for the first functional server, with trusted HTTPS deferred unless it can be added without delaying functionality.
+[Architecture](docs/ARCHITECTURE.md) ·
+[Current status](docs/PROJECT_STATUS.md) ·
+[Backlog](tasks/BACKLOG.md) ·
+[Documentation index](docs/README.md) ·
+[Limited Underground](https://limitedunderground.com)
 
-The dedicated server-radio device is the server's Trail-network interface. Large files that do not belong on the LoRa network may be delivered separately through the server's IP file service.
+## Purpose
 
-## TS-002 host profile
+Trail Server is planned as a Linux-based server and operator interface for a
+Trail LoRa network. The provisional design connects a dedicated
+Trail-compatible radio device over USB to a modular ASP.NET Core application.
+PostgreSQL/PostGIS, Caddy, MapLibre, and PMTiles form the current persistence,
+LAN access, and map direction.
 
-The first Linux host profile now selects the verified Debian 13.6.0 `amd64`
-netinst image, a LightDM/Openbox/Chromium local kiosk, IPv4 DHCP with a private
-router reservation, and a default-deny LAN firewall. Reproducible provisioning,
-verification, recovery, and Hyper-V setup guidance live under
-[`deploy/host`](deploy/host/README.md).
+```text
+Trail LoRa network
+        |
+Dedicated server-radio device
+        | USB / LUSR/1
+        v
+Linux Trail Server
+        |
+        +-- ASP.NET Core API and background services
+        +-- PostgreSQL / PostGIS
+        +-- Caddy LAN entry point
+        +-- Browser-based local and LAN administration
+```
 
-The clean-VM installation, provisioning, reboot, local kiosk, and complete host
-verifier now pass. TS-002 remains in progress only until the router-reserved
-external-LAN path passes second-machine HTTP/SSH and bounded blocked-port
-acceptance.
+Large files are intentionally delivered over a supported IP path rather than
+transported through the constrained LoRa network.
 
-## Repository state
+## Current evidence
 
-The current web source is an interactive interface prototype backed by demonstration data. It does not connect to a radio, database, filesystem authority, or live Trail deployment. The host-profile placeholder is also explicitly non-operational.
+| Area | State | Evidence boundary |
+| --- | --- | --- |
+| Project foundation | Complete | Public repository, architecture, decisions, backlog, and project page |
+| Linux host profile | Reproduced; final LAN gate open | Two Hyper-V VM reproductions and post-reboot host verification |
+| Server-radio contract | Host-simulator accepted | LUSR/1 framing, sessions, credits, durability rules, and privacy-safe errors |
+| ASP.NET Core service | In progress | Health/configuration boundary and disabled transport-neutral radio worker |
+| Database, live radio, and field operation | Not implemented | No production or compatibility claim |
 
-TS-004 Phase A adds a .NET 8 API with a real health/configuration boundary. Its
-only radio state is explicitly unavailable, and it reports operational false.
-The first VM passed deployment, firewall-restart recovery, reboot recovery,
-Caddy access, and blocked direct-container-port checks. See
-[deploy/app](deploy/app/README.md). This does not implement the server-radio
-contract or a functional Trail Server.
+See [Current status](docs/PROJECT_STATUS.md) for the exact accepted and open
+boundaries. No completion percentage is assigned.
 
-TS-004 Phase B adds a disabled-by-default, transport-neutral LUSR/1 background
-worker. Hardware-free tests prove bounded HELLO negotiation, current-session
-monitoring, disconnect failure handling, and that received packets are never
-acknowledged without durable storage. No serial/USB discovery, device mount,
-transmit queue, live hardware, or operational claim is present.
+## Repository scope
 
-TS-003 accepts the simulator-tested
-[LUSR/1 server-radio USB contract](docs/contracts/server-radio-usb-v1.md).
-The contract defines framing, logical identity, bounded credits, idempotent
-transmit IDs, receive-before-ack durability, reconnect/reboot handling, and
-privacy-safe errors while leaving the on-air radio payload opaque. This is not
-hardware or firmware compatibility evidence.
+This repository preserves the Apache-2.0-licensed public prototype and its
+reproducibility evidence. Future commercial production server source is a
+separate private boundary and is not licensed or distributed by this
+repository. See [Repository scope](docs/REPOSITORY_SCOPE.md) and
+[Decision 0004](docs/decisions/0004-separate-public-prototype-and-production-source.md).
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Current status](docs/PROJECT_STATUS.md)
-- [Decision 0001: Server Option V0](docs/decisions/0001-accept-server-option-v0.md)
-- [Decision 0002: First Linux host profile](docs/decisions/0002-select-first-linux-host-profile.md)
-- [Decision 0003: Server-radio USB contract v1](docs/decisions/0003-accept-server-radio-usb-v1.md)
-- [Backlog](tasks/BACKLOG.md)
+## Quick start
 
-## Local prototype
+Prerequisites:
+
+- Node.js 22 or newer
+- .NET 8 SDK
 
 ```powershell
-npm install
+npm ci
+npm test
 npm run dev
 ```
 
-The prototype must continue to identify demonstration data and must not simulate successful hardware or operational actions as real results.
+On Windows, [`Start-TrailServerPrototype.ps1`](Start-TrailServerPrototype.ps1)
+provides the stable prototype launcher. Demonstration data must always remain
+visibly labeled and must never be presented as live hardware or operational
+evidence.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| [`app/`](app/) | Browser interface prototype using demonstration data |
+| [`server/`](server/) | ASP.NET Core API, LUSR/1 contract, bridge, and simulator tests |
+| [`deploy/host/`](deploy/host/README.md) | Reproducible Debian host profile and verifier |
+| [`deploy/app/`](deploy/app/README.md) | Bounded application deployment and verifier |
+| [`docs/`](docs/README.md) | Architecture, decisions, contracts, evidence, and scope |
+| [`tasks/`](tasks/BACKLOG.md) | Canonical engineering backlog and dated progress |
+
+## Contributing, support, and security
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change. Use the
+structured GitHub issue forms for reproducible defects and bounded proposals.
+Read [SUPPORT.md](SUPPORT.md) for the non-operational support boundary. Report
+security vulnerabilities privately according to [SECURITY.md](SECURITY.md).
 
 ## License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+The contents currently published in this repository are licensed under the
+[Apache License 2.0](LICENSE). That license applies to this public prototype; it
+does not grant rights to separate future production server software that is not
+published here.

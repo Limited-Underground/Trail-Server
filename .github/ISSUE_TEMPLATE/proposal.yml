@@ -1,0 +1,35 @@
+name: Bounded proposal
+description: Propose a public prototype, contract, documentation, or tooling improvement.
+title: "[Proposal]: "
+labels:
+  - enhancement
+  - triage
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the problem without assuming a particular solution.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Proposed public-prototype boundary
+      description: Explain why this belongs here rather than in private production source or another project.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: State the smallest validation that would support the change.
+    validations:
+      required: true
+  - type: checkboxes
+    id: claims
+    attributes:
+      label: Scope confirmation
+      options:
+        - label: This proposal does not claim unsupported hardware, RF, field, safety, or production readiness.
+          required: true

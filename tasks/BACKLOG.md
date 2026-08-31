@@ -1,5 +1,10 @@
 # Trail Server Backlog
 
+Items TS-005 and later describe the product roadmap. Production and commercial
+implementation will be tracked in a separate private repository; this public
+repository will retain only sanitized interfaces, prototype code, tooling, and
+evidence appropriate for public collaboration.
+
 | ID | Status | Task | Acceptance boundary |
 | --- | --- | --- | --- |
 | TS-001 | Done | Establish standalone project foundation | Organized local repository, public GitHub repository, canonical architecture/status/decision records, validation, and Limited Underground public project page |
@@ -12,6 +17,13 @@
 | TS-008 | Planned | Integrate one dedicated server-radio device | Exact hardware/firmware binding, receive/transmit evidence, restart recovery, and safe abort behavior |
 
 ## Dated progress
+
+- **2026-08-31 — Repository boundary:** Following its move to the Limited
+  Underground GitHub organization, the public repository received a
+  professional GitHub community profile, consolidated validation workflow,
+  documentation index, explicit public/private scope decision, and clearer
+  non-operational demonstration labels. Production and commercial source is
+  reserved for a separate private repository.
 
 - **2026-08-28 — TS-002:** First Hyper-V VM provisioning, post-reboot
   verification, local kiosk, host-side SSH/HTTP, temporary-NAT firewall probes,
