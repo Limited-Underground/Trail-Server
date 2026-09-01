@@ -28,6 +28,7 @@ The documentation is organized by authority rather than by marketing topic.
 - [TS-004 Phase A service scaffold](evidence/2026-08-29-ts004-phase-a.md)
 - [TS-004 Phase B radio bridge](evidence/2026-08-29-ts004-phase-b-radio-bridge.md)
 - [TS-004 Phase C Linux serial transport](evidence/2026-09-01-ts004-phase-c-linux-serial-transport.md)
+- [TS-004 Phase D Linux PTY preflight](evidence/2026-09-01-ts004-phase-d-linux-pty-preflight.md)
 
 Evidence documents describe only their explicit test boundary. Host simulation
 does not establish USB hardware, RF, deployment, field, or production evidence.

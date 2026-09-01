@@ -55,6 +55,14 @@
   checks passed. The deployed Compose profile remains disabled and has no
   device mapping. No pseudo-terminal, physical USB, firmware, RF, or container
   device-access evidence exists; TS-004 remains in progress.
+- TS-004 Phase D has passed its Linux container preflight. GitHub Actions built
+  the exact public source into a non-root, network-disabled, read-only Debian
+  container and returned `RADIO_BRIDGE_LINUX_PTY_RESULT=PASS` using real kernel
+  pseudo-terminals and `System.IO.Ports`. Fragmented HELLO/ACK, peer-loss
+  reconnect delay, a fresh session, blocked-read shutdown, disposal, and
+  redacted missing-endpoint behavior passed. This is not yet the accepted
+  Debian 13 host reproduction and is not physical USB evidence; TS-004 remains
+  in progress.
 - TS-003 is complete at the contract and host-simulator level. Decision 0003
   accepts LUSR/1 for the local server-radio byte stream. Its deterministic
   framing, version refusal, required-message handling, credits, duplicate
@@ -66,8 +74,9 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- Linux pseudo-terminal and physical USB lifecycle evidence for the TS-004
-  serial transport, including bounded shutdown during a blocked platform open;
+- exact Debian 13 host reproduction of the Linux pseudo-terminal gate;
+- physical USB lifecycle evidence for the TS-004 serial transport, including
+  bounded shutdown during a blocked platform open;
 - production container device mapping and permissions;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;

@@ -61,6 +61,14 @@ published Compose profile still disables the bridge and grants no device
 mapping or elevated authority. The worker sends no transmit requests and
 refuses to acknowledge received packets before TS-005 supplies durable storage.
 
+TS-004 Phase D adds a separate hardened Linux integration gate. A non-root,
+network-disabled, read-only Debian container creates synthetic kernel
+pseudo-terminals, exposes one through a synthetic stable-path link, and runs the
+actual `System.IO.Ports` transport. The gate exercises fragmented negotiation,
+peer loss, delayed reconnect, fresh session identity, blocked-read shutdown,
+owned disposal, and redacted missing-endpoint behavior. This is Linux runtime
+evidence only and does not grant the deployed application any device access.
+
 ## Reused components
 
 | Concern | Current option | Reuse boundary |

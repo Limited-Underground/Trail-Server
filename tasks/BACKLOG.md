@@ -59,5 +59,14 @@ evidence appropriate for public collaboration.
   Compose profile remains disabled with no device mapping or added authority.
   Pseudo-terminal, physical USB, firmware, RF, persistence, container-device,
   and operational evidence remain open; TS-004 stays in progress.
+- **2026-09-01 — TS-004 Phase D preflight:** A hardened Debian test container
+  running non-root with no network, a read-only root filesystem, no Linux
+  capabilities, and no physical device mapping returned
+  `RADIO_BRIDGE_LINUX_PTY_RESULT=PASS` in GitHub Actions. Real Linux
+  `System.IO.Ports` negotiation, disconnect/reconnect, fresh-session,
+  blocked-read shutdown, disposal, and error-redaction paths passed against
+  synthetic kernel pseudo-terminals. Exact Debian 13 host reproduction and all
+  physical USB, firmware, RF, persistence, and operational evidence remain
+  open; TS-004 stays in progress.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.
