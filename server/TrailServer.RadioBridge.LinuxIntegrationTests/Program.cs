@@ -12,30 +12,35 @@ if (!OperatingSystem.IsLinux())
     return 0;
 }
 
+var stage = "startup";
 try
 {
-    await RunAsync();
+    await RunAsync(value => stage = value);
     Console.WriteLine("RADIO_BRIDGE_LINUX_PTY_RESULT=PASS");
     return 0;
 }
 catch (Exception exception)
 {
-    Console.Error.WriteLine($"RADIO_BRIDGE_LINUX_PTY_RESULT=FAIL type={exception.GetType().Name}");
+    Console.Error.WriteLine($"RADIO_BRIDGE_LINUX_PTY_RESULT=FAIL stage={stage} type={exception.GetType().Name}");
     return 1;
 }
 
-static async Task RunAsync()
+static async Task RunAsync(Action<string> setStage)
 {
     const string stableDirectory = "/dev/serial/by-id";
     const string stablePath = stableDirectory + "/SYNTHETIC_TEST_ONLY_trail_radio";
     const string temporaryPath = stableDirectory + "/.SYNTHETIC_TEST_ONLY_next";
+    setStage("prepare-synthetic-directory");
     Directory.CreateDirectory(stableDirectory);
     Assert(!File.Exists(stablePath) && !Directory.Exists(stablePath) &&
         !File.Exists(temporaryPath) && !Directory.Exists(temporaryPath),
         "Synthetic stable path already exists");
 
+    setStage("create-first-pty");
     await using var first = LinuxPseudoTerminal.Open();
+    setStage("create-second-pty");
     await using var second = LinuxPseudoTerminal.Open();
+    setStage("create-stable-link");
     File.CreateSymbolicLink(stablePath, first.SlavePath);
 
     try
@@ -57,23 +62,31 @@ static async Task RunAsync()
         var worker = new ServerRadioBridge(transport, state, Options.Create(options), logger);
         using var overall = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
+        setStage("start-worker");
         await worker.StartAsync(overall.Token);
+        setStage("wait-first-open");
         await WaitUntil(() => factory.CreateCount == 1 && state.GetSnapshot().Phase == RadioBridgePhase.Handshaking,
             overall.Token);
+        setStage("first-handshake");
         await WriteFragmentedHelloAsync(first.Master, overall.Token);
         var firstAck = await ReadHelloAckAsync(first.Master, overall.Token);
 
+        setStage("retarget-stable-link");
         File.CreateSymbolicLink(temporaryPath, second.SlavePath);
         File.Move(temporaryPath, stablePath, overwrite: true);
+        setStage("disconnect-first-pty");
         await first.CloseMasterAsync();
 
+        setStage("wait-reconnect");
         await WaitUntil(() => factory.CreateCount == 2 && state.GetSnapshot().Phase == RadioBridgePhase.Handshaking,
             overall.Token);
         Assert(factory.OpenIntervals[0] >= TimeSpan.FromMilliseconds(800), "Reconnect delay became a tight loop");
+        setStage("second-handshake");
         await WriteFragmentedHelloAsync(second.Master, overall.Token);
         var secondAck = await ReadHelloAckAsync(second.Master, overall.Token);
         Assert(firstAck != secondAck, "Reconnect reused the prior session identity");
 
+        setStage("bounded-stop");
         var stopWatch = Stopwatch.StartNew();
         using var stopTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
         await worker.StopAsync(stopTimeout.Token);
@@ -86,6 +99,7 @@ static async Task RunAsync()
             "Worker did not finish in the bounded stopped state");
         Assert(logger.Messages.All(IsPrivacySafe), "Worker log exposed transport detail");
 
+        setStage("missing-endpoint-redaction");
         await AssertMissingEndpointIsRedactedAsync();
     }
     finally
