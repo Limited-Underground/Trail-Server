@@ -7,7 +7,7 @@ RUN dotnet restore server/TrailServer.RadioBridge.LinuxIntegrationTests/TrailSer
 COPY server/ server/
 RUN dotnet publish server/TrailServer.RadioBridge.LinuxIntegrationTests/TrailServer.RadioBridge.LinuxIntegrationTests.csproj --configuration Release --no-restore --output /out
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
 WORKDIR /app
 COPY --from=build --chown=1654:1654 /out/ ./
 USER 1654:1654
