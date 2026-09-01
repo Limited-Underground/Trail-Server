@@ -1,0 +1,13 @@
+.git
+.github
+.next
+.vinext
+dist
+node_modules
+outputs
+work
+**/bin
+**/obj
+*.pem
+.env*
+deploy/host/profile.env

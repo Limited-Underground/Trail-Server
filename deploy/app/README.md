@@ -27,6 +27,20 @@ The installer:
 The hardened Caddy configuration disables its admin endpoint, so the installer
 uses a validated bounded service restart rather than caddy reload.
 
+## Linux pseudo-terminal preflight
+
+The repository includes a Linux-only integration gate for the serial bridge.
+It builds and runs in a non-root, network-disabled, read-only Docker container
+and uses kernel pseudo-terminals rather than a physical device:
+
+    sudo ./tools/test-radio-bridge-linux.sh
+
+A successful run ends with `RADIO_BRIDGE_LINUX_PTY_RESULT=PASS`. This checks
+Linux `System.IO.Ports`, fragmented LUSR/1 negotiation, disconnect/reconnect,
+fresh sessions, bounded blocked-read shutdown, disposal, and redacted errors.
+It does not configure the production service or prove USB hardware, firmware,
+RF, udev, electrical serial settings, or container device mapping.
+
 ## Recovery check
 
 The Docker/nftables lifecycle check is meaningful only with the application

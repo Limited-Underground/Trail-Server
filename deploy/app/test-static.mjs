@@ -16,6 +16,10 @@ const requiredFiles = [
   "server/TrailServer.RadioBridge/IRadioByteTransport.cs",
   "server/TrailServer.RadioBridge/ConfiguredRadioByteTransport.cs",
   "server/TrailServer.RadioBridge/RadioBridgeOptionsValidator.cs",
+  "server/TrailServer.RadioBridge.LinuxIntegrationTests/Program.cs",
+  "server/TrailServer.RadioBridge.LinuxIntegrationTests/LinuxPseudoTerminal.cs",
+  "server/TrailServer.RadioBridge.LinuxIntegrationTests/Dockerfile",
+  "tools/test-radio-bridge-linux.sh",
   "server/TrailServer.Api/Dockerfile",
   "deploy/app/compose.yaml",
   "deploy/app/docker-nftables.conf",
@@ -40,6 +44,7 @@ const compose = read("deploy/app/compose.yaml");
 const dockerNftables = read("deploy/app/docker-nftables.conf");
 const caddy = read("deploy/host/files/Caddyfile");
 const verifier = read("deploy/app/verify-app.sh");
+const linuxPtyHarness = read("tools/test-radio-bridge-linux.sh");
 
 assert.ok(project.includes("<TargetFramework>net8.0</TargetFramework>"), "service must target net8.0");
 assert.ok(program.includes('app.MapGet("/api/health"'), "service health endpoint is missing");
@@ -75,5 +80,10 @@ assert.ok(verifier.startsWith("#!/usr/bin/env bash\nset -Eeuo pipefail"), "app v
 assert.ok(verifier.includes('"operational":false'), "app verifier must reject an operational claim");
 assert.ok(verifier.includes('"status":"unavailable"'), "app verifier must require unavailable radio");
 assert.ok(verifier.includes("127.0.0.1:5080->8080/tcp"), "app verifier must require loopback publication");
+assert.ok(linuxPtyHarness.startsWith("#!/usr/bin/env bash\nset -Eeuo pipefail"), "Linux PTY harness is not fail-closed");
+assert.ok(linuxPtyHarness.includes("--network none"), "Linux PTY test must not receive network access");
+assert.ok(linuxPtyHarness.includes("--read-only"), "Linux PTY test must use a read-only root filesystem");
+assert.ok(linuxPtyHarness.includes("--cap-drop ALL"), "Linux PTY test must drop all capabilities");
+assert.ok(!linuxPtyHarness.includes("--device"), "Linux PTY test must not map physical devices");
 
 console.log(`Trail Server service scaffold checks passed (${requiredFiles.length} files).`);
