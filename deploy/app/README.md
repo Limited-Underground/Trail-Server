@@ -41,6 +41,16 @@ fresh sessions, bounded blocked-read shutdown, disposal, and redacted errors.
 It does not configure the production service or prove USB hardware, firmware,
 RF, udev, electrical serial settings, or container device mapping.
 
+For the exact Debian 13 target-host reproduction, first authenticate sudo and
+then run the sanitized wrapper with the expected public commit:
+
+    sudo -v
+    ./tools/verify-radio-bridge-linux-host.sh <expected-commit>
+
+The wrapper rejects dirty source, a mismatched commit, non-Debian-13 hosts, and
+remote Docker daemons. It runs the host and application verifiers before and
+after the PTY gate and emits only bounded evidence fields and PASS markers.
+
 ## Recovery check
 
 The Docker/nftables lifecycle check is meaningful only with the application

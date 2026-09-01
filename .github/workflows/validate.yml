@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Validate shell syntax
-        run: bash -n deploy/host/install-host.sh deploy/host/verify-host.sh deploy/host/files/trail-server-kiosk deploy/app/install-app.sh deploy/app/verify-app.sh tools/test-radio-bridge-linux.sh
+        run: bash -n deploy/host/install-host.sh deploy/host/verify-host.sh deploy/host/files/trail-server-kiosk deploy/app/install-app.sh deploy/app/verify-app.sh tools/test-radio-bridge-linux.sh tools/verify-radio-bridge-linux-host.sh
       - name: Run complete validation
         run: npm test
       - name: Run hardened Linux pseudo-terminal integration

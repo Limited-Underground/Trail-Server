@@ -20,6 +20,7 @@ const requiredFiles = [
   "server/TrailServer.RadioBridge.LinuxIntegrationTests/LinuxPseudoTerminal.cs",
   "server/TrailServer.RadioBridge.LinuxIntegrationTests/Dockerfile",
   "tools/test-radio-bridge-linux.sh",
+  "tools/verify-radio-bridge-linux-host.sh",
   "server/TrailServer.Api/Dockerfile",
   "deploy/app/compose.yaml",
   "deploy/app/docker-nftables.conf",
@@ -45,6 +46,7 @@ const dockerNftables = read("deploy/app/docker-nftables.conf");
 const caddy = read("deploy/host/files/Caddyfile");
 const verifier = read("deploy/app/verify-app.sh");
 const linuxPtyHarness = read("tools/test-radio-bridge-linux.sh");
+const linuxHostVerifier = read("tools/verify-radio-bridge-linux-host.sh");
 
 assert.ok(project.includes("<TargetFramework>net8.0</TargetFramework>"), "service must target net8.0");
 assert.ok(program.includes('app.MapGet("/api/health"'), "service health endpoint is missing");
@@ -86,5 +88,8 @@ assert.ok(linuxPtyHarness.includes("--read-only"), "Linux PTY test must use a re
 assert.ok(linuxPtyHarness.includes("timeout --signal=KILL 30s"), "Linux PTY test must have an external time bound");
 assert.ok(linuxPtyHarness.includes("--cap-drop ALL"), "Linux PTY test must drop all capabilities");
 assert.ok(!linuxPtyHarness.includes("--device"), "Linux PTY test must not map physical devices");
+assert.ok(linuxHostVerifier.startsWith("#!/usr/bin/env bash\nset -Eeuo pipefail"), "Linux host PTY verifier is not fail-closed");
+assert.ok(linuxHostVerifier.includes('[[ -z "${DOCKER_HOST:-}" ]]'), "Linux host PTY verifier must reject remote daemons");
+assert.ok(linuxHostVerifier.includes("TARGET_HOST_LINUX_PTY_RESULT=PASS"), "Linux host PTY verifier lacks a final marker");
 
 console.log(`Trail Server service scaffold checks passed (${requiredFiles.length} files).`);
