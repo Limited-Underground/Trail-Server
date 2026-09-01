@@ -52,6 +52,11 @@ public sealed class ServerRadioBridge(
                 state.Set(RadioBridgePhase.Unavailable, exception.Code);
                 logger.LogWarning("Radio bridge session ended; code={Code}", PrivacySafeError.NormalizeCode(exception.Code));
             }
+            catch (RadioTransportUnavailableException)
+            {
+                state.Set(RadioBridgePhase.Unavailable, "transport_unavailable");
+                logger.LogWarning("Radio bridge session ended; code={Code}", "transport_unavailable");
+            }
             catch (Exception)
             {
                 state.Set(RadioBridgePhase.Unavailable, "radio_unavailable");

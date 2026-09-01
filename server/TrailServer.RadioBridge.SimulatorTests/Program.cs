@@ -1,4 +1,5 @@
 using System.Formats.Cbor;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using TrailServer.RadioBridge;
@@ -7,6 +8,10 @@ using TrailServer.RadioContract;
 var tests = new (string Name, Func<Task> Run)[]
 {
     ("disabled worker never opens transport", DisabledWorker),
+    ("serial options require an explicit stable Linux device path", SerialOptionsValidation),
+    ("configured serial transport uses exact path and baud", ConfiguredSerialTransport),
+    ("cancelled serial open performs no device access", CancelledSerialOpen),
+    ("failed serial open is redacted and disposed", FailedSerialOpen),
     ("fragmented HELLO resynchronizes and negotiates", FragmentedHandshake),
     ("coalesced frames remain connection-scoped", CoalescedFrames),
     ("major mismatch fails closed", MajorMismatch),
@@ -53,6 +58,102 @@ static async Task DisabledWorker()
     AssertEqual(RadioBridgePhase.Disabled, state.GetSnapshot().Phase, "Disabled worker changed authority");
     AssertEqual("not-configured", state.GetSnapshot().Reason, "Disabled reason changed");
 }
+
+static Task SerialOptionsValidation()
+{
+    var validator = new RadioBridgeOptionsValidator();
+    Assert(validator.Validate(null, new RadioBridgeOptions()).Succeeded, "Disabled defaults did not validate");
+
+    foreach (var invalid in new[]
+    {
+        new RadioBridgeOptions { Enabled = true, Transport = "disabled" },
+        new RadioBridgeOptions { Enabled = true, Transport = "serial" },
+        new RadioBridgeOptions { Enabled = true, Transport = " serial ", SerialDevicePath = "/dev/serial/by-id/test" },
+        new RadioBridgeOptions { Enabled = true, Transport = "serial", SerialDevicePath = "/dev/ttyUSB0" },
+        new RadioBridgeOptions { Enabled = true, Transport = "serial", SerialDevicePath = "/dev/serial/by-id/../ttyUSB0" },
+        new RadioBridgeOptions { Enabled = true, Transport = "serial", SerialDevicePath = "COM3" },
+        new RadioBridgeOptions { Transport = "disabled", SerialDevicePath = "/dev/serial/by-id/test" },
+    })
+        Assert(!validator.Validate(null, invalid).Succeeded, "Unsafe serial configuration validated");
+
+    var valid = new RadioBridgeOptions
+    {
+        Enabled = true,
+        Transport = "serial",
+        SerialDevicePath = "/dev/serial/by-id/usb-Limited_Underground_Trail_Radio-if00",
+        SerialBaudRate = 115_200,
+    };
+    Assert(validator.Validate(null, valid).Succeeded, "Explicit stable serial configuration did not validate");
+    var invalidBaud = new RadioBridgeOptions
+    {
+        Enabled = true,
+        Transport = "serial",
+        SerialDevicePath = valid.SerialDevicePath,
+        SerialBaudRate = 0,
+    };
+    var annotationResults = new List<ValidationResult>();
+    Assert(!Validator.TryValidateObject(invalidBaud, new ValidationContext(invalidBaud), annotationResults, true),
+        "Out-of-range baud rate passed data-annotation validation");
+    return Task.CompletedTask;
+}
+
+static async Task ConfiguredSerialTransport()
+{
+    const string path = "/dev/serial/by-id/usb-Limited_Underground_Trail_Radio-if00";
+    var factory = new RecordingSerialConnectionFactory();
+    var transport = new ConfiguredRadioByteTransport(new RadioBridgeOptions
+    {
+        Enabled = true,
+        Transport = "serial",
+        SerialDevicePath = path,
+        SerialBaudRate = 230_400,
+    }, factory);
+
+    await using (var stream = await transport.OpenAsync(CancellationToken.None))
+    {
+        Assert(stream.CanRead && stream.CanWrite, "Opened serial stream is not duplex");
+    }
+
+    AssertEqual(path, factory.DevicePath!, "Configured device path changed");
+    AssertEqual(230_400, factory.BaudRate, "Configured baud rate changed");
+    Assert(factory.Connection!.Disposed, "Disposing the stream did not dispose the serial owner");
+}
+
+static async Task CancelledSerialOpen()
+{
+    var factory = new RecordingSerialConnectionFactory();
+    var transport = ValidConfiguredTransport(factory);
+    using var cancellation = new CancellationTokenSource();
+    cancellation.Cancel();
+    await AssertThrows<OperationCanceledException>(() => transport.OpenAsync(cancellation.Token).AsTask());
+    AssertEqual(0, factory.CreateCount, "Cancelled open accessed the serial device");
+}
+
+static async Task FailedSerialOpen()
+{
+    const string privatePath = "/dev/serial/by-id/private-device-identity";
+    var factory = new RecordingSerialConnectionFactory(openFailure: new IOException($"denied: {privatePath}"));
+    var transport = new ConfiguredRadioByteTransport(new RadioBridgeOptions
+    {
+        Enabled = true,
+        Transport = "serial",
+        SerialDevicePath = privatePath,
+    }, factory);
+
+    var failure = await AssertThrows<RadioTransportUnavailableException>(() =>
+        transport.OpenAsync(CancellationToken.None).AsTask());
+    Assert(!failure.ToString().Contains(privatePath, StringComparison.Ordinal), "Transport failure exposed the device path");
+    Assert(factory.Connection!.Disposed, "Failed serial open did not dispose the connection");
+}
+
+static ConfiguredRadioByteTransport ValidConfiguredTransport(ISerialConnectionFactory factory) => new(
+    new RadioBridgeOptions
+    {
+        Enabled = true,
+        Transport = "serial",
+        SerialDevicePath = "/dev/serial/by-id/test-radio",
+    },
+    factory);
 
 static async Task FragmentedHandshake()
 {
@@ -266,6 +367,19 @@ static async Task AssertProtocolFailure(string expectedCode, Func<Task> action)
     throw new InvalidOperationException("Expected protocol failure did not occur");
 }
 
+static async Task<TException> AssertThrows<TException>(Func<Task> action) where TException : Exception
+{
+    try
+    {
+        await action();
+    }
+    catch (TException exception)
+    {
+        return exception;
+    }
+    throw new InvalidOperationException($"Expected {typeof(TException).Name} did not occur");
+}
+
 static void Assert(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
@@ -333,5 +447,46 @@ file sealed class LifecycleTransport(params ScriptedDuplexStream[] streams) : IR
         if (next < streams.Length) return streams[next++];
         await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
         throw new OperationCanceledException(cancellationToken);
+    }
+}
+
+file sealed class RecordingSerialConnectionFactory(Exception? openFailure = null) : ISerialConnectionFactory
+{
+    public int CreateCount { get; private set; }
+    public string? DevicePath { get; private set; }
+    public int BaudRate { get; private set; }
+    public RecordingSerialConnection? Connection { get; private set; }
+
+    public ISerialConnection Create(string devicePath, int baudRate)
+    {
+        CreateCount++;
+        DevicePath = devicePath;
+        BaudRate = baudRate;
+        Connection = new RecordingSerialConnection(openFailure);
+        return Connection;
+    }
+}
+
+file sealed class RecordingSerialConnection(Exception? openFailure) : ISerialConnection
+{
+    private readonly MemoryStream stream = new();
+    public bool Disposed { get; private set; }
+
+    public Stream Open()
+    {
+        if (openFailure is not null) throw openFailure;
+        return stream;
+    }
+
+    public void Dispose()
+    {
+        Disposed = true;
+        stream.Dispose();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        Dispose();
+        return ValueTask.CompletedTask;
     }
 }

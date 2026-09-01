@@ -8,6 +8,14 @@ public sealed class RadioBridgeOptions
 
     public bool Enabled { get; init; }
 
+    [Required]
+    public string Transport { get; init; } = "disabled";
+
+    public string? SerialDevicePath { get; init; }
+
+    [Range(1_200, 2_000_000)]
+    public int SerialBaudRate { get; init; } = 115_200;
+
     [Range(1, 30)]
     public int HelloTimeoutSeconds { get; init; } = 5;
 

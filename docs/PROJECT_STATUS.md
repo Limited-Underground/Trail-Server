@@ -1,6 +1,6 @@
 # Trail Server Project Status
 
-**As of:** 2026-08-31
+**As of:** 2026-09-01
 
 ## Current state
 
@@ -48,6 +48,13 @@
   major/session/mandatory-message refusal, clean EOF, and receive-without-ACK
   behavior. No serial/USB transport or hardware was used; TS-004 remains in
   progress.
+- TS-004 Phase C is host-simulator tested. The bridge now has an opt-in Linux
+  serial implementation with bounded configuration, an explicit stable-path
+  policy, fixed 8-N-1/no-flow-control settings, connection ownership, and
+  privacy-safe open failures. Fifteen simulator cases and deployment static
+  checks passed. The deployed Compose profile remains disabled and has no
+  device mapping. No pseudo-terminal, physical USB, firmware, RF, or container
+  device-access evidence exists; TS-004 remains in progress.
 - TS-003 is complete at the contract and host-simulator level. Decision 0003
   accepts LUSR/1 for the local server-radio byte stream. Its deterministic
   framing, version refusal, required-message handling, credits, duplicate
@@ -59,7 +66,9 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- a real TS-004 serial/USB transport and completed service scaffold;
+- Linux pseudo-terminal and physical USB lifecycle evidence for the TS-004
+  serial transport, including bounded shutdown during a blocked platform open;
+- production container device mapping and permissions;
 - PostgreSQL/PostGIS schema;
 - dedicated server-radio firmware role;
 - USB hardware connection or firmware implementation of LUSR/1;

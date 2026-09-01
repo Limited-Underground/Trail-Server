@@ -51,10 +51,15 @@ publishes it only on host loopback. Caddy is the sole accepted LAN entry point.
 The application deployment couples Docker restart ordering to nftables restart
 so Docker reconstructs its private network rules after the firewall is rebuilt.
 The API rejects an operational claim. TS-004 Phase B adds a transport-neutral
-LUSR/1 background worker that is disabled in deployed configuration. It can
-negotiate and monitor a simulated ordered byte stream, but it has no serial or
-USB discovery implementation, sends no transmit requests, and refuses to
-acknowledge received packets before TS-005 supplies durable storage.
+LUSR/1 background worker that is disabled in deployed configuration. Phase C
+adds an opt-in Linux serial byte-stream implementation with explicit baud-rate
+configuration, fixed 8-N-1 framing, no flow control, and an ownership wrapper
+that closes the serial connection with the stream. Configuration fails closed
+unless the process-visible path uses the stable `/dev/serial/by-id/` namespace;
+the actual device identity remains private deployment configuration. The
+published Compose profile still disables the bridge and grants no device
+mapping or elevated authority. The worker sends no transmit requests and
+refuses to acknowledge received packets before TS-005 supplies durable storage.
 
 ## Reused components
 
@@ -87,7 +92,9 @@ The server may announce a compact file manifest through an applicable Trail mess
 ## Deferred choices
 
 - exact server-radio hardware after supported-device evidence exists;
-- exact USB class, device discovery, and stable Linux device path;
+- exact USB class, device discovery, and production device identity;
+- whether a future container mapping retains the host stable path or exposes a
+  neutral process-visible alias after Linux USB reliability testing;
 - containerized versus native radio bridge after Linux USB reliability testing;
 - local-disk versus S3-compatible file storage after actual scale is known;
 - trusted LAN HTTPS;

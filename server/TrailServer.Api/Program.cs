@@ -14,9 +14,10 @@ builder.Services
     .Bind(builder.Configuration.GetSection(RadioBridgeOptions.SectionName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
+builder.Services.AddSingleton<Microsoft.Extensions.Options.IValidateOptions<RadioBridgeOptions>, RadioBridgeOptionsValidator>();
 builder.Services.AddSingleton<RadioBridgeState>();
 builder.Services.AddSingleton<IRadioBridgeState>(services => services.GetRequiredService<RadioBridgeState>());
-builder.Services.AddSingleton<IRadioByteTransport, DisabledRadioByteTransport>();
+builder.Services.AddSingleton<IRadioByteTransport, ConfiguredRadioByteTransport>();
 builder.Services.AddSingleton<IServerRadioStatus, BridgeServerRadioStatus>();
 builder.Services.AddHostedService<ServerRadioBridge>();
 

@@ -7,6 +7,8 @@ services:
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
       TrailServer__InstanceName: ts002-development
+      TrailServer__RadioBridge__Enabled: "false"
+      TrailServer__RadioBridge__Transport: disabled
     ports:
       - "127.0.0.1:5080:8080"
     read_only: true

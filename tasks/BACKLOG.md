@@ -52,5 +52,12 @@ evidence appropriate for public collaboration.
   session refusal, corruption recovery, EOF, and receive-without-ACK behavior.
   No serial/USB implementation, device mount, transmit queue, persistence,
   hardware, RF, or operational claim exists. TS-004 remains in progress.
+- **2026-09-01 — TS-004 Phase C:** An opt-in Linux serial transport now applies
+  explicit stable-path and baud configuration, fixed 8-N-1/no-flow-control
+  settings, owned connection disposal, and redacted open failures. Fifteen
+  host-simulator cases and deployment static checks passed. The published
+  Compose profile remains disabled with no device mapping or added authority.
+  Pseudo-terminal, physical USB, firmware, RF, persistence, container-device,
+  and operational evidence remain open; TS-004 stays in progress.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.

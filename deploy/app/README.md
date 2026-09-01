@@ -1,10 +1,12 @@
 # Trail Server application deployment
 
 This directory deploys the bounded TS-004 Phase A ASP.NET Core service to a
-provisioned TS-002 host. It does not provide a radio transport, packet
-database, live queue, or operational Trail Server. Phase B includes a
-transport-neutral LUSR/1 background worker, but deployed configuration keeps it
-disabled and no serial/USB implementation or device mount exists.
+provisioned TS-002 host. It does not provide a packet database, live queue, or
+operational Trail Server. Phase B includes a transport-neutral LUSR/1
+background worker. Phase C adds an opt-in Linux serial implementation, but the
+published deployment keeps it explicitly disabled and provides no device
+mount, device identity, host group, or elevated authority. Production device
+binding and permissions remain TS-008 work.
 
 ## Install or update
 
