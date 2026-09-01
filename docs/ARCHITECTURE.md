@@ -68,6 +68,10 @@ actual `System.IO.Ports` transport. The gate exercises fragmented negotiation,
 peer loss, delayed reconnect, fresh session identity, blocked-read shutdown,
 owned disposal, and redacted missing-endpoint behavior. This is Linux runtime
 evidence only and does not grant the deployed application any device access.
+The same hardened containerized gate has been reproduced on the selected Debian
+13.6 `amd64` host with the standing host and application verifiers passing both
+before and after it. This remains containerized PTY evidence, not native host
+serial or physical USB evidence.
 
 ## Reused components
 

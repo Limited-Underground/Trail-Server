@@ -1,7 +1,7 @@
 # TS-004 Phase D Linux PTY preflight evidence
 
 **Date:** 2026-09-01
-**Result:** Linux container preflight passed; Debian 13 host reproduction open
+**Result:** Linux container preflight passed; later reproduced on Debian 13 host
 
 ## Exact evidence
 
@@ -40,15 +40,14 @@ The existing full repository suite also passed in the same workflow. Published
 Compose configuration remains explicitly disabled, loopback-only, non-root,
 read-only, capability-free, and without `/dev` or physical-device authority.
 
-## Explicit nonclaims and remaining gate
+## Subsequent target-host gate
 
-This result is Linux container/runtime evidence, not the exact Debian 13.6
-Trail Server host reproduction. The same public command still must return PASS
-on that VM before Phase D receives target-host acceptance:
+The exact Debian 13.6 Trail Server host subsequently reproduced this same
+hardened containerized gate from clean public commit
+`756937d4b14eb078f1ef96285d36950db8fe8336`. See the
+[target-host evidence](2026-09-01-ts004-phase-d-debian-host-reproduction.md).
 
-```bash
-sudo ./tools/test-radio-bridge-linux.sh
-```
+## Explicit nonclaims
 
 Pseudo-terminals do not prove physical USB CDC behavior, baud accuracy,
 electrical framing, modem-control behavior, udev identity or permissions,

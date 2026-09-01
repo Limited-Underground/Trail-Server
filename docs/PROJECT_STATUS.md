@@ -60,9 +60,14 @@
   container and returned `RADIO_BRIDGE_LINUX_PTY_RESULT=PASS` using real kernel
   pseudo-terminals and `System.IO.Ports`. Fragmented HELLO/ACK, peer-loss
   reconnect delay, a fresh session, blocked-read shutdown, disposal, and
-  redacted missing-endpoint behavior passed. This is not yet the accepted
-  Debian 13 host reproduction and is not physical USB evidence; TS-004 remains
-  in progress.
+  redacted missing-endpoint behavior passed.
+- The same Phase D gate was then reproduced from exact clean public commit
+  `756937d4b14eb078f1ef96285d36950db8fe8336` on the selected Debian 13.6
+  `amd64` host. The hardened test returned
+  `TARGET_HOST_LINUX_PTY_RESULT=PASS`; the application and host verifiers passed
+  before and after it. This is target-host reproduction of the containerized
+  Linux PTY gate, not native host serial or physical USB evidence. TS-004
+  remains in progress.
 - TS-003 is complete at the contract and host-simulator level. Decision 0003
   accepts LUSR/1 for the local server-radio byte stream. Its deterministic
   framing, version refusal, required-message handling, credits, duplicate
@@ -74,7 +79,6 @@
 
 - final external-LAN DHCP reservation and second-machine HTTP/SSH acceptance;
 - repeated blocked-port checks from the final reserved-LAN path;
-- exact Debian 13 host reproduction of the Linux pseudo-terminal gate;
 - physical USB lifecycle evidence for the TS-004 serial transport, including
   bounded shutdown during a blocked platform open;
 - production container device mapping and permissions;

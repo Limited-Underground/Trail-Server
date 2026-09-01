@@ -50,7 +50,7 @@ transported through the constrained LoRa network.
 | Project foundation | Complete | Public repository, architecture, decisions, backlog, and project page |
 | Linux host profile | Reproduced; final LAN gate open | Two Hyper-V VM reproductions and post-reboot host verification |
 | Server-radio contract | Host-simulator accepted | LUSR/1 framing, sessions, credits, durability rules, and privacy-safe errors |
-| ASP.NET Core service | In progress | Disabled-by-default bridge and Linux-container PTY-tested serial transport; Debian host gate open |
+| ASP.NET Core service | In progress | Disabled-by-default bridge with Linux PTY lifecycle reproduced on the selected Debian host |
 | Database, live radio, and field operation | Not implemented | No production or compatibility claim |
 
 See [Current status](docs/PROJECT_STATUS.md) for the exact accepted and open

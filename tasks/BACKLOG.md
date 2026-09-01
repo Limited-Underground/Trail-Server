@@ -68,5 +68,12 @@ evidence appropriate for public collaboration.
   synthetic kernel pseudo-terminals. Exact Debian 13 host reproduction and all
   physical USB, firmware, RF, persistence, and operational evidence remain
   open; TS-004 stays in progress.
+- **2026-09-01 — TS-004 Phase D target host:** Exact clean public commit
+  `756937d4b14eb078f1ef96285d36950db8fe8336` reproduced the hardened
+  containerized Linux PTY gate on the selected Debian 13.6 `amd64` host and
+  returned `TARGET_HOST_LINUX_PTY_RESULT=PASS`. The application and host
+  verifiers passed before and after the gate. Physical USB, native-host serial,
+  firmware, RF, persistence, and operational evidence remain open; TS-004 stays
+  in progress.
 
 Planning and prototype work do not advance a completion percentage or establish support, production, or field readiness.
