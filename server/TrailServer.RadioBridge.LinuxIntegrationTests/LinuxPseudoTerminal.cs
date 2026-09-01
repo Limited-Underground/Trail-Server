@@ -23,9 +23,8 @@ internal sealed class LinuxPseudoTerminal : IAsyncDisposable
 
         const int readWrite = 0x0002;
         const int noControllingTerminal = 0x0100;
-        const int nonBlocking = 0x0800;
         const int closeOnExec = 0x80000;
-        var descriptor = Native.posix_openpt(readWrite | noControllingTerminal | nonBlocking | closeOnExec);
+        var descriptor = Native.posix_openpt(readWrite | noControllingTerminal | closeOnExec);
         if (descriptor < 0) throw Native.Failure("posix_openpt");
 
         var handle = new SafeFileHandle((nint)descriptor, ownsHandle: true);
@@ -42,7 +41,7 @@ internal sealed class LinuxPseudoTerminal : IAsyncDisposable
             if (!slavePath.StartsWith("/dev/pts/", StringComparison.Ordinal))
                 throw new InvalidOperationException("Pseudo-terminal returned an unexpected slave namespace");
 
-            var stream = new FileStream(handle, FileAccess.ReadWrite, 4096, isAsync: true);
+            var stream = new FileStream(handle, FileAccess.ReadWrite, 4096, isAsync: false);
             handle = null!;
             return new LinuxPseudoTerminal(stream, slavePath);
         }

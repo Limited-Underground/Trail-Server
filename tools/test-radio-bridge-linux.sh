@@ -8,7 +8,7 @@ docker build \
   --tag "$image" \
   .
 
-docker run --rm \
+timeout --signal=KILL 30s docker run --rm \
   --network none \
   --read-only \
   --user 1654:1654 \

@@ -83,6 +83,7 @@ assert.ok(verifier.includes("127.0.0.1:5080->8080/tcp"), "app verifier must requ
 assert.ok(linuxPtyHarness.startsWith("#!/usr/bin/env bash\nset -Eeuo pipefail"), "Linux PTY harness is not fail-closed");
 assert.ok(linuxPtyHarness.includes("--network none"), "Linux PTY test must not receive network access");
 assert.ok(linuxPtyHarness.includes("--read-only"), "Linux PTY test must use a read-only root filesystem");
+assert.ok(linuxPtyHarness.includes("timeout --signal=KILL 30s"), "Linux PTY test must have an external time bound");
 assert.ok(linuxPtyHarness.includes("--cap-drop ALL"), "Linux PTY test must drop all capabilities");
 assert.ok(!linuxPtyHarness.includes("--device"), "Linux PTY test must not map physical devices");
 
