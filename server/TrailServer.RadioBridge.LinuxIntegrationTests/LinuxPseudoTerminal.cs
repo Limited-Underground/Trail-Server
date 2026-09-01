@@ -23,7 +23,9 @@ internal sealed class LinuxPseudoTerminal : IAsyncDisposable
 
         const int readWrite = 0x0002;
         const int noControllingTerminal = 0x0100;
-        var descriptor = Native.posix_openpt(readWrite | noControllingTerminal);
+        const int nonBlocking = 0x0800;
+        const int closeOnExec = 0x80000;
+        var descriptor = Native.posix_openpt(readWrite | noControllingTerminal | nonBlocking | closeOnExec);
         if (descriptor < 0) throw Native.Failure("posix_openpt");
 
         var handle = new SafeFileHandle((nint)descriptor, ownsHandle: true);
